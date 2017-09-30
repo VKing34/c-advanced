@@ -1,0 +1,82 @@
+<?php
+// Permanent redirection
+$q = 0;
+if (!empty($_REQUEST['iPro'])) {
+	$q = (int) $_REQUEST['iPro'];
+	PermanentRedirectPage($q);
+}else
+{
+	header("HTTP/1.1 301 Moved Permanently");
+	header("Location: http://mycplus.com/category/free-utilities/");
+}
+exit();
+
+function PermanentRedirectPage($q) {
+header("HTTP/1.1 301 Moved Permanently");
+	switch ($q) {
+	case 1:
+	    header("Location: http://mycplus.com/free-utilities/stack-implementation/");
+	    break;
+	case 2:
+	    header("Location: http://mycplus.com/free-utilities/bank-management/");
+	    break;
+	case 3:
+	    header("Location: http://mycplus.com/free-utilities/profit-loss-calculator/");
+	    break;
+	case 4:
+	    header("Location: http://mycplus.com/free-utilities/compiler-interface/");
+	    break;
+	case 5:
+	    header("Location: http://mycplus.com/free-utilities/text-editor/");
+	    break;
+	case 6:
+	    header("Location: http://mycplus.com/free-utilities/scientific-calculator/");
+	    break;
+	case 10:
+	    header("Location: http://mycplus.com/free-utilities/b-tree-implementation/");
+	    break;
+	case 11:
+	    header("Location: http://mycplus.com/free-utilities/sorting-routines/");
+	    break;
+	case 12:
+	    header("Location: http://mycplus.com/free-utilities/lame-mp3-software/");
+	    break;
+	case 13:
+	    header("Location: http://mycplus.com/free-utilities/dynamic-image-creation/");
+	    break;
+	case 15:
+	    header("Location: http://mycplus.com/free-utilities/standard-function-library/");
+	    break;
+	case 16:
+	    header("Location: http://mycplus.com/free-utilities/disk-encryption/");
+	    break;
+	case 17:
+	    header("Location: http://mycplus.com/free-utilities/data-structure-library/");
+	    break;
+	case 18:
+	    header("Location: http://mycplus.com/free-utilities/adobe-open-source-libraries/");
+	    break;
+	case 18:
+	    header("Location: http://mycplus.com/free-utilities/adobe-open-source-libraries/");
+	    break;
+	case 19:
+	    header("Location: http://mycplus.com/free-utilities/personal-organizer/");
+	    break;
+	case 20:
+	    header("Location: http://mycplus.com/free-utilities/string-library/");
+	    break;
+	case 7:
+	    header("Location: http://mycplus.com/free-utilities/fortran-c-library/");
+	    break;
+	case 8:
+	    header("Location: http://mycplus.com/free-utilities/read-write-ascii-data/");
+	    break;
+	case 9:
+	    header("Location: http://mycplus.com/free-utilities/sort-data/");
+	    break;
+	default:
+	    header("Location: http://mycplus.com/category/free-utilities/");
+		break;
+	}
+}
+?>
