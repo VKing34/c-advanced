@@ -1,0 +1,75 @@
+#include<stdio.h>
+#include<time.h>
+#include<stdlib.h>
+#define max 1000
+
+
+void createArray(int a[], int size, int MAX)
+{
+  int i;
+  srand(time(NULL));
+  for (i=0;i<size;i++)
+    {
+      a[i]= rand() % MAX+1;
+    }
+}
+
+void swap(int *x, int *y)
+{
+  int temp = *x;
+  *x = *y;
+  *y = temp;
+}
+
+void sort(int a[],int left, int right)
+{
+  if(right <= left) return;
+  int lt = left, gt = right;
+  int pivot = a[left];
+  int i = left;
+  while(i <= gt)
+    {
+      if(a[i] == pivot)
+	++i;
+      else if(a[i] > pivot)
+	swap(&a[i], &a[gt--]);
+      else
+	{
+	  swap(&a[i++], &a[lt++]);
+	}
+	 
+    }
+  sort(a,left, lt-1);
+  sort(a, gt+1, right);
+}
+
+int funccompre(const void *a, const void *b)
+{
+  return ( *(int*)a - *(int*)b);
+}
+
+void compare()
+{
+  int a[max];
+  createArray(a,max, 10);
+  int b[max] = a[max];
+  clock_t start = clock();
+  sort(a,0,max-1);
+  clock_t end = clock();
+  printf("Timing number for 3-partition quicksort: %f\n", (float)(end-start)/ CLOCKS_PER_SEC);
+  clock_t start = clock();
+  qsort(b, max, sizeof(int), funccompre);
+  clock_t end = clock();
+  printf("Timing number for qsort: %f\n", (float)(end-start)/ CLOCKS_PER_SEC);
+  
+  
+}
+
+
+int main()
+{
+  
+  compare();
+  return 0;
+  
+}
