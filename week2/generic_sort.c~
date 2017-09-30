@@ -1,0 +1,142 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+// Compare 2 integers
+int int_cmp(void const *a,void const *b)
+{
+  return *((int*)a) - *((int*)b);
+}
+
+// Compare 2 strings
+int str_cmp(const void *a, const void *b)
+{
+  
+  return strcmp(*(const char**)a, *(const char**)b);
+}
+
+// Compare 2 trings version 2
+int str_cmp_v2(const void *a, const void *b)
+{
+  
+  return strcmp(a,b);
+}
+
+
+// Copy basically
+/* void* memcpy(const void* region1, const void* region2, size_t n) */
+/* { */
+/*   const char* first = (const char*) region2; */
+/*   const char* last = ((const char*) region2) + n; */
+/*   char* result = (char*) region1; */
+  
+/*   while(first != last) */
+/*     *result++ = *first++; */
+/*   return result; */
+/* } */
+
+void swap(void *a,void *b, size_t width)
+{
+  unsigned char *tmp = malloc(width);
+
+  memcpy(tmp, a, width);
+  memcpy(a, b, width);
+  memcpy(b, tmp, width);
+}
+
+/* void quickSort(void *a, int left, int right, size_t width, int (*compare)(const void*,const void*)) */
+/* { */
+/*   if(right <= left) */
+/*     return; */
+/*   int lt = left, gt =  right; */
+/*   unsigned char* ca = (char*)a; */
+/*   unsigned char* pivot = malloc(width); */
+/*   memcpy(pivot,ca, width); */
+/*   int i = left; */
+/*   int x; */
+/*   while(i <= gt) */
+/*     { */
+/*       if(compare(pivot, ca + i*width) == 0) */
+/* 	 ++i; */
+/*       else if(compare(pivot, ca + i*width) < 0) */
+/* 	{ */
+/* 	  /\* printf("%d\n",compare(ca, ca + i*width) ); *\/ */
+/* 	  swap(ca + i*width, ca + gt*width,width); */
+/* 	  for(x = 0; x <= 5; x++) */
+/* 	    { */
+/* 	      printf("a[%d] = %d \t", x, ); */
+/* 	    } */
+/* 	  printf("\n"); */
+/* 	  gt--; */
+/* 	} */
+/*       else */
+/* 	{ */
+/* 	  swap(ca + i*width, ca + lt*width,width); */
+/* 	  i++; */
+/* 	  lt++; */
+/* 	  for(x = 0; x <= 5; x++) */
+/* 	    { */
+/* 	      printf("a[%d] = %d \t", x, ); */
+/* 	    } */
+/* 	  printf("\n"); */
+/* 	} */
+/*     } */
+/*   quickSort(a,left, lt-1, width, compare); */
+/*   quickSort(a, gt+1, right, width, compare); */
+  
+/* } */
+
+void example(void *a, size_t width, int (*compare)(const void*, const void*))
+{
+  printf("%d\n", a);
+  
+  unsigned char* pivot = (char*)a;
+  if(compare(pivot, pivot + 3*width) ==0)
+    {
+      printf("1\n");
+    }
+  else {
+    printf("0\n" );
+  }
+  swap(pivot + 2*width, pivot + 3*width, width);
+  printf("%d\n%d\n", pivot + 2*width, pivot + 3*width);
+  
+}
+
+int main(){
+     int a1[] = {1, 3, 4, 52, 2, 3};
+     char a2[5][20] = { "jhsa", "asndb", "drtfe", "nhurh", "bvhr"};
+     char *a3[] = { "jhsa", "asndb", "drtfe", "nhurh", "bvhr"};
+     int i = 0;
+     
+     /* quickSort(a1, 0, 5, sizeof(int), int_cmp); */
+     /* for(i = 0; i < 6; i++){ */
+     /*   printf("\n%d", a1[i]); */
+     /* } */
+     /* printf("\n"); */
+     
+     /* quickSort(a2, 0, 4, sizeof(*a2), str_cmp_v2); */
+     /* for (i = 0; i < 5; i++) { */
+     /*   printf("%s\t", a2[i]); */
+     /* } */
+     /* printf("\n"); */
+
+     /* int len = sizeof(a3) / sizeof(*a3); */
+     /* qsort(a3, len, sizeof(*a3), str_cmp); */
+     /* for(i=0; i<len; i++) */
+     /*   { */
+     /* 	 printf("%s\t",a3[i]); */
+     /*   } */
+     /* printf("\n"); */
+    
+
+     /* int x = 3, y = 5; */
+     /* printf("sizeof(*a2) = %d\n", sizeof(*a2)); */
+     /* swap(a2[1], a2[2],sizeof(*a2)); */
+     /* printf("x: %s, y: %s\n", a2[1], a2[2]); */
+     
+     example(a1, sizeof(*a1), int_cmp);
+     
+     return 0;
+}
