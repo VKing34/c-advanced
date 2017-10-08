@@ -147,7 +147,8 @@ int main(int argc, char *argv[]) {
 	    break;
 	  if(fscanf(f,"%[^\t]",name) == EOF)
 	    break;
-	  fscanf(f,"%*c");
+	  if(fscanf(f,"%*c") == EOF)
+	    break;
 	  fscanf(f,"%[^\n]", number); fscanf(f,"%*c");
 	 
 	  btins(tree, name, number, 20);
