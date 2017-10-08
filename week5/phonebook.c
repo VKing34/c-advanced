@@ -155,7 +155,7 @@ int main(int argc, char *argv[]) {
 	}
     }
     fclose(f);
-    while (choose != 0 || choose != 7) {
+    while (choose != 0) {
       menu();
       scanf("%d", &choose);
       switch(choose) {
@@ -187,6 +187,8 @@ int main(int argc, char *argv[]) {
 	break;
       case 7:
 	save(tree,argv[1]);
+	btcls(tree);
+	return 0;
 	break;
       default:
 	
