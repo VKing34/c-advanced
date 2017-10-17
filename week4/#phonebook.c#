@@ -7,7 +7,7 @@
 void print_book(JRB book)
 {
   JRB node;
-  jrb_traverse(node, book){
+  jrb_traverse(node, book){1
     printf("%s - %li\n", jval_s(node->key), jval_l(node->val));
   };
 }
