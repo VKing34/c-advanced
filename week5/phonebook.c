@@ -201,3 +201,5 @@ int main(int argc, char *argv[]) {
     btcls(tree);
     return 0;
 }
+
+// gcc -g -o phonebook phonebook.c -Lbt/lib -lbt -Ibt/inc

@@ -1,0 +1,7 @@
+black	mau den
+i	toi
+me	toi
+my	cua toi
+people	con nguoi, loai nguoi
+red	mau do
+yellow	mau vang
