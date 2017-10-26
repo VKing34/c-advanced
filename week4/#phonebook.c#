@@ -7,7 +7,7 @@
 void print_book(JRB book)
 {
   JRB node;
-  jrb_traverse(node, book){1
+  jrb_traverse(node, book){
     printf("%s - %li\n", jval_s(node->key), jval_l(node->val));
   };
 }
@@ -51,4 +51,4 @@ int main()
   
 }
 
-/* To compile: gcc -o phone phonebook.c libfdr.a && ./phone */
+/* To compile: gcc -o phone phonebook.c libfdqr.a && ./phone */

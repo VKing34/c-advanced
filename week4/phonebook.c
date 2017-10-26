@@ -34,14 +34,14 @@ int main()
 {
   JRB book = make_jrb();
 
-  char *name1 = "vuong";
+  char name1[20] = "vuong";
   char *name2 = "thoa";
   char *name3 = "minhto";
   char *name4 = "thanh";
-  jrb_insert_str(book, strdup(name1), new_jval_l(8495343432));
-  jrb_insert_str(book, strdup(name2), new_jval_l(84162228388));
-  jrb_insert_str(book, strdup(name3), new_jval_l(8490954345));
-  jrb_insert_str(book, strdup(name4), new_jval_l(84165232322));
+  jrb_insert_str(book, name1, new_jval_l(8495343432));
+  jrb_insert_str(book, name2, new_jval_l(84162228388));
+  jrb_insert_str(book, name3, new_jval_l(8490954345));
+  jrb_insert_str(book, name4, new_jval_l(84165232322));
 
   print_book(book);
    

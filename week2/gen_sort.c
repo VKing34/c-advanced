@@ -8,7 +8,6 @@ int int_compare(void *a, void *b)
   return *(int*)a - *(int*)b;
 }
 
-
 int str_compare(void *a, void *b)
 {
   return strcmp(a,b);
