@@ -1,5 +1,6 @@
 black	mau den
 i	toi
+king	vua
 me	toi
 my	cua toi
 people	con nguoi, loai nguoi

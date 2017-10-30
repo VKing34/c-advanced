@@ -228,3 +228,5 @@ int main(int argc, char *argv[])
    jrb_free_tree(book);
    return 0;
 }
+
+/* gcc -o menu menu.c libfdr.a && ./menu phonebook.txt */

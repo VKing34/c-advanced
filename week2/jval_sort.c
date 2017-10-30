@@ -10,6 +10,8 @@ int string_compare(Jval *a, Jval *b)
   return strcmp(a->s, b->s);
 }
 
+
+
 int int_compare(Jval *a, Jval *b)
 {
   return a->i - b->i;
@@ -63,7 +65,7 @@ int main()
     }
 
   Jval b[4];
-  b[0] = new_jval_s("Anh");
+  b[0] = new_jval_s("anh");
   b[1] = new_jval_s("Yeu");
   b[2] = new_jval_s("Em");
   b[3] = new_jval_s("Lam");
@@ -74,5 +76,9 @@ int main()
     {
       printf("%s\n", b[j].s);
     }
+
   return 0;
 }
+
+
+/* gcc -o jqsort jval_sort.c libfdr.a && ./jqsort */

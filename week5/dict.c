@@ -69,31 +69,12 @@ int readFile(BTA *dict, BTA *sdex, char *filename)
   	break;
       fscanf(f,"%[^\n]\n", meaning);
 
-      if(addWord(dict, word, meaning) == 0)
+      if(addWord(dict, word, meaning) == 0)  // return 0 if addWord is successful, return 1 if not
       	{
       	  addSoundex(sdex,word);
       	}
     
     }
-  /* char a; */
-  /* while(1) */
-  /*   { */
-  /*     if(feof(f)) */
-  /* 	break; */
-  /*     fscanf(f,"%[^@]"); */
-  /*     fscanf(f,"%*c",a); */
-  /*     if(fscanf(f,"%[^\n/]",word) == EOF) */
-  /* 	break; */
-	
-  /*     fscanf(f,"%[^-]"); */
-  /*     fscanf(f,"%*c"); */
-  /*     fscanf(f,"%[^\n]",meaning); */
-  /*     if(addWord(dict, word, meaning) == 0) */
-  /* 	{ */
-  /* 	  addSoundex(sdex,word); */
-  /* 	} */
-  /*     printf("%s - %s\n", word, meaning); */
-  /*   } */
   fclose(f);
   return 0;
 }
@@ -161,6 +142,7 @@ void lookup(BTA *dict, BTA *sdex)
   else {
     print_word(word, meaning);
   }
+  free(word);
 }
 
 char *input_string()
@@ -242,8 +224,6 @@ int main(int argc,char *argv[])
 	case 3:
 	  while(getchar()!='\n');
 	  delWord(dict,sdex);
-	  /* print_tree(dict); */
-	  /* print_tree(sdex); */
 	  break;
 	case 4:
 	  save(dict,argv[1]);
