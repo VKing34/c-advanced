@@ -199,7 +199,6 @@ void BFS(JRB g, int start, int stop, void (*func)(int ) )
 	  return;
 	}
       adj = findVertice(g, new_jval_i(u));
-      
       jrb_traverse(temp, adj)
 	{
 	  v = jval_i(temp->key);
@@ -209,7 +208,6 @@ void BFS(JRB g, int start, int stop, void (*func)(int ) )
 	      dll_append(q, new_jval_i(v));
 	    }
 	};
-	
     }
   free_dllist(q);
 }
@@ -244,7 +242,6 @@ void DFS(JRB g, int start, int stop, void (*func)(int ))
 	}
 
       adj = findVertice(g, new_jval_i(u));
-     
       jrb_traverse(temp, adj)
 	{
 	  v = jval_i(temp->key);
@@ -252,8 +249,7 @@ void DFS(JRB g, int start, int stop, void (*func)(int ))
 	    {
 	      dll_prepend(stack, new_jval_i(v));
 	    }
-	};
-	
+	}
     }
   free_dllist(stack);
 }

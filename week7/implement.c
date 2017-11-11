@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-
+#define max 99
 #include"jval.h"
 #include"jrb.h"
 
@@ -12,7 +12,7 @@ void menu()
   printf("---------------------------------------------------------\n");
   printf("\t\t JRB - Graph\n");
   printf("---------------------------------------------------------\n");
-  printf("1. BFS\n 2. DFS\n 3. Find out the shortest path\n 0. Quit\nChooe one option: ");
+  printf(" 1. BFS\n 2. DFS\n 3. Find out the shortest path\n 0. Quit\nChooe one option: ");
 }
 
 void addEdge(graph root, Jval v1, Jval v2)
@@ -118,29 +118,29 @@ void freeGraph(JRB root)
     }
 }
 
-void bfs(graph root, Jval)
-{
+/* void bfs(graph root, Jval) */
+/* { */
   
-}
+/* } */
 
 
-void case1(graph root)
-{
-  Jval s;
-  printf("Enter vertice: ");
-  scanf("%d", &s.i);
-  bfs(root, s);
+/* void case1(graph root) */
+/* { */
+/*   Jval s; */
+/*   printf("Enter vertice: "); */
+/*   scanf("%d", &s.i); */
+/*   bfs(root, s); */
   
-}
+/* } */
 
-void case2(graph root)
-{
-  int s;
-  printf("Enter vertice: ");
-  scanf("%d", &s);
-  dfs(root, s);
+/* void case2(graph root) */
+/* { */
+/*   int s; */
+/*   printf("Enter vertice: "); */
+/*   scanf("%d", &s); */
+/*   dfs(root, s); */
   
-}
+/* } */
 
 int main()
 {
@@ -160,11 +160,11 @@ int main()
 	  break;
 	case 1:
 	  
-	  case1(groot);
+	  /* case1(groot); */
 	  break;
 	case 2:
 	  
-	  case2(groot);
+	  /* case2(groot); */
 	  break;
 	case 3:
 	  
