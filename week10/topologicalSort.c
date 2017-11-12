@@ -176,7 +176,7 @@ int DAG(Graph g)
 	    return 1;
 	}
     }
-  return 0;   // return 0 if DAG, return 1 if not DAG
+  return 0;  // return 0 if DAG, return 1 if not DAG
 }
 
 
@@ -187,25 +187,60 @@ void dropGraph(Graph g)
   jrb_traverse(node, g.edges)
     {
       jrb_free_tree((JRB)jval_v(node->val));
-    }
+    };
   jrb_free_tree(g.edges);
   jrb_free_tree(g.vertices);
 }
 
+void topoSort(Graph g, int vertex, int *visited, Dllist q)
+{
+  JRB temp, adj;
+  visited[vertex] = 1; // Mark current node as visited
+
+  adj = adjVertex(g, vertex);
+  jrb_traverse(temp, adj)
+    {
+      if(visited[jval_i(temp->key)] == 0)
+	{
+	  topoSort(g, jval_i(temp->key), visited, q);
+	}
+    };
+    
+  dll_prepend(q, new_jval_i(vertex));
+  
+}
+
+void topologicalSort(Graph g, int *output, int *total)
+{
+  Dllist q, node;
+  JRB temp;
+  int visited[max] = {0}; // Mark all the vertex as not visited
+  q = new_dllist();
+
+  jrb_traverse(temp, g.edges)
+    {
+      if(visited[jval_i(temp->key)] == 0)
+	{
+	  topoSort(g, jval_i(temp->key), visited, q);
+	}
+    };
+
+  while(!dll_empty(q))
+    {
+      node = dll_first(q);
+      output[(*total)++] = jval_i(node->val);
+      dll_delete_node(node);
+    }
+  free_dllist(q);
+  
+
+  
+}
+
 int main()
 {
+  int n=0, output[max]; 
   Graph g = createGraph();
-  /* addVertex(g, 0, new_jval_s("V0")); */
-  /* addVertex(g, 1, new_jval_s("V1")); */
-  /* addVertex(g, 2, new_jval_s("V2")); */
-  /* addVertex(g, 3, new_jval_s("V3")); */
-  /* /\* addVertex(g, 4, new_jval_s("V4")); *\/ */
-  /* /\* addVertex(g, 5, new_jval_s("V5")); *\/ */
-  /* addEdge(g, 0, 1); */
-  /* addEdge(g, 1, 2); */
-  /* addEdge(g, 2, 3); */
-  /* addEdge(g, 1, 3); */
-  /* /\* addEdge(g, 3, 4); *\/ */
   addVertex(g, 0, new_jval_s("CS102"));
   addVertex(g, 1, new_jval_s("CS140"));
   addVertex(g, 2, new_jval_s("CS160"));
@@ -218,26 +253,23 @@ int main()
   addEdge(g, 5, 4);
   addEdge(g, 3, 4);
 
-
-
-  printf("%s\n", jval_s(getVertex(g, 1)));
-  int arr[max];
-  int total = indegree(g, 3, arr);
-  for(int i =0; i < total; i++)
-    {
-      printf("%d\t", arr[i]);
-    }
-  printf("\n");
- 
-
   if(DAG(g) == 1)
-    printf("not DAG!\n");
-  else {
-    printf("DAG!\n" );
-  }
+    {
+      printf("Can not make topological sort!!!\n");
+      return 1;
+    }
+  topologicalSort(g, output, &n);
+
+  printf("The topological order:\n");
+  for(int i = 0; i< n ; i++)
+    {
+      printf("%s\n", jval_s(getVertex(g, output[i])));
+    }
+    
+ 
   dropGraph(g);
   return 0;
 }
 
 
-/* gcc -o dir directed.c libfdr.a && ./dir */
+/* gcc -o topoSort topologicalSort.c libfdr.a && ./topoSort */
