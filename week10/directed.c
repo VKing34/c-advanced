@@ -222,7 +222,7 @@ int main()
 
   printf("%s\n", jval_s(getVertex(g, 1)));
   int arr[max];
-  int total = indegree(g, 3, arr);
+  int total = indegree(g, 4, arr);
   for(int i =0; i < total; i++)
     {
       printf("%d\t", arr[i]);
