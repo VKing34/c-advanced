@@ -140,20 +140,20 @@ int isCyclicUtil(Graph g, int node, int *visited, int *stack)
   stack[node] = 1;
   adj = adjVertex(g, node);
   jrb_traverse(temp, adj)
-    {
-      u = jval_i(temp->key);
-      if(visited[u] == 0)
-	{
-	  if(isCyclicUtil(g, u, visited, stack) == 1)
-	    {
-	      return 1;
-	    }
-	}
-      else if(stack[u] == 1)
-	{
-	  return 1;
-	}
-    }
+  {
+    u = jval_i(temp->key);
+    if(visited[u] == 0)
+	   {
+	     if(isCyclicUtil(g, u, visited, stack) == 1)
+	     {
+	         return 1;
+	       }
+	   }
+    else if(stack[u] == 1)
+	   {
+	     return 1;
+	   }
+  }
   stack[node] = 0;
   return 0;
   
