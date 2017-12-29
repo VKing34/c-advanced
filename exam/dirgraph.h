@@ -7,10 +7,6 @@
 #include"jrb.h"
 #define max 99
 #define infinitive_value 999
-#define infinitive_value 999
-#define enqueue(queue, id) dll_append(queue, new_jval_i(id))
-#define push(queue, id) dll_prepend(stack, new_jval_i(id))
-#define pop(stack) dequeue(stack)
 
 typedef struct{
 char *name;

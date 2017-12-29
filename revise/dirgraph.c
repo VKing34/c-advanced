@@ -1,4 +1,8 @@
 #include"dirgraph.h"
+#define enqueue(queue, id) dll_append(queue, new_jval_i(id))
+#define push(queue, id) dll_prepend(stack, new_jval_i(id))
+#define pop(stack) dequeue(stack)
+
 Graph createGraph()
 {
   Graph g;
@@ -411,28 +415,28 @@ void BFS(Graph g, int start, int stop, int (*func)(Graph, int))
   enqueue(q, start);
 
   while(!dll_empty(q))
-  {
-    ver = dequeue(q);
+    {
+      ver = dequeue(q);
 
-    if(ver == stop)
-	   {
-	     return;
-	   }
+      if(ver == stop)
+	{
+	  return;
+	}
       
-    n = getAdjVertices(g, ver, adj);
-    for(i = 0; i < n; i++)
-	   {
+      n = getAdjVertices(g, ver, adj);
+      for(i = 0; i < n; i++)
+	{
 //	  v = jrb_find_int(g.vertices, adj[i]);
 //	  a = getAttribute(v);
-	     a = verAttribute(g, adj[i]);
-	     if(a->visited == 0)
-	     {
+	a = verAttribute(g, adj[i]);
+	  if(a->visited == 0)
+	    {
 	      a->visited = 1;
 	      enqueue(q, adj[i]);
 	      func(g, adj[i]);
-	     }
-	   }
-  }
+	    }
+	}
+    }
   
   free_dllist(q);
 }
