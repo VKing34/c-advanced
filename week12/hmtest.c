@@ -18,4 +18,4 @@ int main()
   printf("\n");
 }
 
-/* gcc -o hmtest hmtest.c huffman.c libfdr.a && ./hmtest */
+/* gcc -o hmtest hmtest.c dirgraph.c huffman.c libfdr.a && ./hmtest */

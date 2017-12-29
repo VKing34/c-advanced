@@ -36,6 +36,7 @@ attribute getAttribute(JRB node)
   return ((attribute) jval_v(node->val));
 }
 
+
 void addVertex(Graph g, int v, char *name)
 {
   JRB node, node1, tree;
@@ -44,23 +45,26 @@ void addVertex(Graph g, int v, char *name)
     {
       jrb_insert_int(g.vertices, v, setAttribute(name));
     }
-  else {
-    if(name)
-      {
-	attribute a = getAttribute(node);
-	if(strcmp(a->name, name))
+  else
+  {
+   if(!name)
 	  {
-	    free(a->name);
-	    node->val = setAttribute(name);
+		  return;
 	  }
-      }
+	 attribute a = getAttribute(node);
+	 if(strcmp(a->name, name))
+	 {
+	   free(a->name);
+	   node->val = setAttribute(name);
+	 }
+ 
   }
-  node1 = jrb_find_int(g.edges, v);
-  if(!node1)
-    {
-      tree = make_jrb();
-      jrb_insert_int(g.edges, v, new_jval_v(tree));
-    }
+//  node1 = jrb_find_int(g.edges, v);
+//  if(!node1)
+//    {
+//      tree = make_jrb();
+//      jrb_insert_int(g.edges, v, new_jval_v(tree));
+ //   }
 }
 
 void addEdge(Graph g, int v1, int v2, int weight)
@@ -70,23 +74,39 @@ void addEdge(Graph g, int v1, int v2, int weight)
       printf("Weight must be greater than 0!!!\n");
       return;
     }
-  JRB node, node2;
+  JRB node;
+  JRB adjVertices = make_jrb();;
   node = jrb_find_int(g.edges, v1);
   if(node == NULL)
     {
-      printf("The vertex %d does not exist!!!\n", v1);
-      return;
+      jrb_insert_int(adjVertices, v2, new_jval_i(weight));
+      jrb_insert_int(g.edges, v1, new_jval_v(adjVertices));
+      
     }
-  node2 = jrb_find_int(g.edges, v2);
-  if(node2 == NULL)
-    {
-      printf("The vertex %d does not exist!!!\n", v2);
-      return;
-    }
-  if(jrb_find_int((JRB)jval_v(node->val), v2) == NULL)
-    {
-      jrb_insert_int((JRB)jval_v(node->val), v2, new_jval_i(weight));
-    }
+  else {
+    adjVertices = (JRB) jval_v(node->val);
+    node = jrb_find_int(adjVertices, v2);
+    if(node == NULL)
+      {
+	     jrb_insert_int(adjVertices, v2, new_jval_i(weight));
+      }
+  }
+}
+
+JRB getVertex(Graph g, int v)
+{
+  JRB node = jrb_find_int(g.vertices, v);
+  if (node)
+    return node;
+  else {
+    return NULL;
+  }
+}
+
+attribute verAttribute(Graph g, int v)
+{
+JRB node = getVertex(g, v);
+return ((attribute) jval_v(node->val));
 }
 
 int getEdgeValue(Graph g, int v1, int v2)
@@ -183,15 +203,10 @@ int outdegree(Graph g, int v, int *output)
 }
 
 
-char *getVertexName(Graph g, int v)
+char *getVerName(Graph g, int v)
 {
-  JRB node = jrb_find_int(g.vertices, v);
-  if(node != NULL)
-    {
-      return node->val.s;
-    }
-  else
-    return NULL;
+  attribute a = verAttribute(g, v);
+  return a->name;
 }
 
 
@@ -208,15 +223,6 @@ int getWeight(Graph g, int v1, int v2)
   }
 }
 
-JRB getVertex(Graph g, int v)
-{
-  JRB node = jrb_find_int(g.vertices, v);
-  if (node)
-    return node;
-  else {
-    return NULL;
-  }
-}
 
 
 void initSingleSource(Graph g, int s)
@@ -258,11 +264,24 @@ void relax(Graph g, int u, int v)
     }
 }
 
+JRB getAdjList(Graph g, int v)
+{
+JRB node = jrb_find_int(g.edges, v);
+if(node)
+{
+return (JRB) jval_v(node->val);
+}
+else
+{
+return NULL;
+}
+}
+
 int getAdjVertices(Graph g, int v, int *output)
 {
   JRB node;
   int i =0;
-  JRB adj = adjVertex(g, v);
+  JRB adj = getAdjList(g, v);
   
   if(!adj)
     {
@@ -281,14 +300,15 @@ int extractMin(Graph g, Dllist q)
 {
   int min = infinitive_value;
   Dllist min_node;
-  JRB v;
+//  JRB v;
   int id;
   Dllist node;
   attribute a;
 
   dll_traverse(node, q){
-    v = getVertex(g, jval_i(node->val));
-    a = getAttribute(v);
+//    v = getVertex(g, jval_i(node->val));
+//    a = getAttribute(v);
+	a = verAttribute(g, jval_i(node->val));
     if(min > a->distance)
       {
 	min = a->distance;
@@ -355,10 +375,12 @@ int dequeue(Dllist queue)
 int printVertex(Graph g, int v)
 {
   attribute a;
-  JRB temp;
+  //JRB temp;
 
-  temp = jrb_find_int(g.vertices, v);
-  a = getAttribute(temp);
+  //temp = jrb_find_int(g.vertices, v);
+  //a = getAttribute(temp);
+
+	a = verAttribute(g, v);
 
   printf("%d : %s\n", v, a->name);
 
@@ -383,8 +405,9 @@ void BFS(Graph g, int start, int stop, int (*func)(Graph, int))
 
   func(g, start);
 
-  v = jrb_find_int(g.vertices, start);
-  a = getAttribute(v);
+//  v = jrb_find_int(g.vertices, start);
+//  a = getAttribute(v);
+	a = verAttribute(g, start);
   a->visited = 1;
 
   // init a queue
@@ -403,8 +426,9 @@ void BFS(Graph g, int start, int stop, int (*func)(Graph, int))
       n = getAdjVertices(g, ver, adj);
       for(i = 0; i < n; i++)
 	{
-	  v = jrb_find_int(g.vertices, adj[i]);
-	  a = getAttribute(v);
+//	  v = jrb_find_int(g.vertices, adj[i]);
+//	  a = getAttribute(v);
+	a = verAttribute(g, adj[i]);
 	  if(a->visited == 0)
 	    {
 	      a->visited = 1;
@@ -436,8 +460,10 @@ void DFS(Graph g, int start, int stop, int (*func)(Graph, int))
   while(!dll_empty(stack)){
     ver = pop(stack);
 
-    node = jrb_find_int(g.vertices, ver);
-    a = getAttribute(node);
+//    node = jrb_find_int(g.vertices, ver);
+//    a = getAttribute(node);
+
+	a = verAttribute(g, ver);	
 
     if(a->visited == 0)
       {
@@ -453,8 +479,9 @@ void DFS(Graph g, int start, int stop, int (*func)(Graph, int))
     n = getAdjVertices(g, ver, adj);
     for(i = 0; i< n ; i++)
       {
-	node = jrb_find_int(g.vertices, adj[i]);
-	a = getAttribute(node);
+//	node = jrb_find_int(g.vertices, adj[i]);
+//	a = getAttribute(node);
+	a = verAttribute(g, adj[i]);
 	if(a->visited == 0)
 	  {
 	    push(stack, adj[i]);
@@ -477,3 +504,127 @@ void dropGraph(Graph g)
   jrb_free_tree(g.edges);
   jrb_free_tree(g.vertices);
 }
+
+int isCyclicUtil(Graph g, int vertex, attribute a)
+{
+  int u;
+  JRB node, adj;
+  attribute a2;
+
+  a->visited = 1;
+  a->distance = 1;
+
+  adj = adjVertex(g, vertex);
+  if(adj)
+  {
+    jrb_traverse(node, adj)
+    {
+      u = jval_i(node->key);
+      a2 = verAttribute(g, u);
+      if(a2->visited == 0)
+      {
+        if(isCyclicUtil(g, u, a2) == 1)
+          return 1;
+      }
+      else if(a2->distance == 1)
+      {
+        return 1;
+      }
+    }
+  }
+
+  a->distance = 0;
+  return 0;
+}
+
+int DAG(Graph g)
+{
+  JRB v;
+  attribute a;
+  int vertex;
+  jrb_traverse(v, g.vertices)
+  {
+    a = getAttribute(v);
+    a->visited = 0;
+    a->distance = 0;
+  }
+
+  jrb_traverse(v, g.vertices)
+  {
+    a = getAttribute(v);
+    if(a->visited == 0)
+    {
+      if(isCyclicUtil(g, jval_i(v->key), a) == 1)
+        return 1;
+    }
+  }
+
+  return 0;  // return 0 if DAG, retun 1 if not
+}
+
+void topoSort(Graph g, int vertex, attribute a, Dllist q)
+{
+  JRB node, adj;
+  int v;
+  attribute a2;
+  adj = adjVertex(g, vertex);
+
+  a->visited = 1; // Mark the current node as visited
+
+  if(adj)
+  { 
+    jrb_traverse(node, adj)
+    {
+      v = jval_i(node->key);
+      a2 = verAttribute(g, v);
+      // printf("%d : %d : %d : %d\n", vertex, a->visited, v, a2->visited);
+      if(a2->visited == 0)
+      {
+        topoSort(g, v, a2, q);
+      }
+    }
+  }
+
+  dll_prepend(q, new_jval_i(vertex));
+}
+
+
+void tSort(Graph g, int *output, int *total)
+{
+  Dllist q, node;
+  JRB v;
+  attribute a;
+
+  q = new_dllist();
+
+  // Mark all as unvisited
+  jrb_traverse(v, g.vertices)
+  {
+    a = getAttribute(v);
+    a->visited = 0;
+  }
+
+  // jrb_traverse(v, g.vertices)
+  // {
+  //   a = verAttribute(g, jval_i(v->key));
+  //   printf("%d\n", a->visited);
+  // }
+
+  jrb_traverse(v, g.vertices)
+  {
+    a = getAttribute(v);
+    if(a->visited == 0)
+    {
+      topoSort(g, jval_i(v->key), a, q);
+    }
+  }
+
+  while(!dll_empty(q))
+  {
+    node = dll_first(q);
+    output[(*total)++] = jval_i(node->val);
+    dll_delete_node(node);
+  }
+  free_dllist(q);
+}
+

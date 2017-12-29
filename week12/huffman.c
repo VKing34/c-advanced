@@ -237,3 +237,5 @@ void compress(char *buffer, int size, char *huffman, int *nbit)
       encode(buffer[i], hmTable, huffman, nbit);
     }
 }
+
+
