@@ -234,7 +234,7 @@ void DFS(JRB g, int start, int stop, void (*func)(int ))
       dll_delete_node(node);
 
       if(visited[u] == 0)
-	func(u);
+	     func(u);
       
       visited[u] = 1;
 

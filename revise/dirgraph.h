@@ -14,9 +14,9 @@
 
 typedef struct{
 char *name;
-int id;
 int visited;
 int distance;
+int parent;
 JRB pr;
 } at;
 
@@ -32,13 +32,15 @@ Graph createGraph();
 void addVertex(Graph g, int id, char *name);
 attribute getAttribute(JRB node);
 void addEdge(Graph g, int v1, int v2, int weight);
+void insertEdge(Graph g, int v1, int v2, int weight);
+int getWeight(Graph g, int v1, int v2);
+void weight_increase(Graph g, int v1, int v2);
 JRB adjVertex(Graph g, int v);
 int hasEdge(Graph g, int v1, int v2);
 attribute verAttribute(Graph g, int v);
 int indegree(Graph g, int v, int *output);
 int outdegree(Graph g, int v, int *output);
 char *getVerName(Graph g, int v);
-int getWeight(Graph g, int v1, int v2);
 int getAdjVertices(Graph g, int v, int *output);
 int shortestPath(Graph g, int s, int t, int *path, int *length);
 int printVertex(Graph g, int v);

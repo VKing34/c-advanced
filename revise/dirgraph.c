@@ -93,6 +93,40 @@ void addEdge(Graph g, int v1, int v2, int weight)
   }
 }
 
+void insertEdge(Graph g, int v1, int v2, int weight)
+{
+  addEdge(g, v1, v2, weight);
+  addEdge(g, v2, v1, weight);
+}
+
+int getWeight(Graph g, int v1, int v2)
+{
+  if (v1 == v2)
+    return 0;
+  JRB node1 = jrb_find_int(g.edges, v1);
+  JRB node2 = jrb_find_int((JRB)jval_v(node1->val), v2);
+  if(node2)
+    return jval_i(node2->val);
+  else {
+    return infinitive_value;
+  }
+}
+
+void weight_increase(Graph g, int v1, int v2)
+{
+
+  JRB node1 = jrb_find_int(g.edges, v1);
+  JRB node2 = jrb_find_int((JRB)jval_v(node1->val), v2);
+  int w = jval_i(node2->val);
+  node2->val = new_jval_i(w+ 1);
+
+  node1 = jrb_find_int(g.edges, v2);
+  node2 = jrb_find_int((JRB)jval_v(node1->val), v1);
+  node2->val = new_jval_i(w + 1);
+}
+
+
+
 JRB getVertex(Graph g, int v)
 {
   JRB node = jrb_find_int(g.vertices, v);
@@ -146,26 +180,35 @@ int hasEdge(Graph g, int v1, int v2)
   JRB adj1 , tnode1, tnode2, adj2;
 
   adj1 = adjVertex(g, v1);
-  jrb_traverse(tnode1, adj1)
+  if(adj1)
+  {
+    jrb_traverse(tnode1, adj1)
     {
       if( v2 == jval_i(tnode1->key))
-	{
-	  return 1;
-	}
-      
+      {
+        return 1;
+      }
     }
+  }
+  else
+  {
+    return 0;
+  }
 
   adj2 = adjVertex(g, v2);
-  jrb_traverse(tnode2, adj2)
+  if(adj2)
+  {
+    jrb_traverse(tnode2, adj2)
     {
       if(v1 == jval_i(tnode2->key))
-	{
-	  return 1;
-	}
+	   {
+	     return 1;
+	   }
     }
-  
-  return 0;
-  
+  }
+  else{
+    return 0;
+  }
 }
 
 int indegree(Graph g, int v, int *output)
@@ -207,20 +250,6 @@ char *getVerName(Graph g, int v)
 {
   attribute a = verAttribute(g, v);
   return a->name;
-}
-
-
-int getWeight(Graph g, int v1, int v2)
-{
-  if (v1 == v2)
-    return 0;
-  JRB node1 = jrb_find_int(g.edges, v1);
-  JRB node2 = jrb_find_int((JRB)jval_v(node1->val), v2);
-  if(node2)
-    return jval_i(node2->val);
-  else {
-    return infinitive_value;
-  }
 }
 
 
@@ -457,35 +486,36 @@ void DFS(Graph g, int start, int stop, int (*func)(Graph, int))
 
   push(stack, start);
 
-  while(!dll_empty(stack)){
-    ver = pop(stack);
+  while(!dll_empty(stack))
+  {
+      ver = pop(stack);
 
-//    node = jrb_find_int(g.vertices, ver);
-//    a = getAttribute(node);
+      //    node = jrb_find_int(g.vertices, ver);
+      //    a = getAttribute(node);
 
-	a = verAttribute(g, ver);	
+	   a = verAttribute(g, ver);	
 
-    if(a->visited == 0)
+      if(a->visited == 0)
       {
-	a->visited = 1;
-	func(g, ver);
+	       a->visited = 1;
+	       func(g, ver);
       }
 
-    if(ver == stop)
+      if(ver == stop)
       {
-	return;
+	       return;
       }
 
-    n = getAdjVertices(g, ver, adj);
-    for(i = 0; i< n ; i++)
+      n = getAdjVertices(g, ver, adj);
+      for(i = 0; i< n ; i++)
       {
-//	node = jrb_find_int(g.vertices, adj[i]);
-//	a = getAttribute(node);
-	a = verAttribute(g, adj[i]);
-	if(a->visited == 0)
-	  {
-	    push(stack, adj[i]);
-	  }
+          //	node = jrb_find_int(g.vertices, adj[i]);
+          //	a = getAttribute(node);
+	       a = verAttribute(g, adj[i]);
+	       if(a->visited == 0)
+	       {
+	         push(stack, adj[i]);
+	       }
       }
   }
 
