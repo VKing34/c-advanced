@@ -15,7 +15,7 @@ void size(char *filename)
 		return;
 	}
 	fscanf(f, "%d\n", &n);
-	printf("%d\n", n);
+	// printf("%d\n", n);
 	while(count != n)
 	{
 		fscanf(f, "%[^\n]\n", tmp);
@@ -27,15 +27,16 @@ void size(char *filename)
 	fclose(f);
 }
 
-void read_file(Graph g, char *filename)
+Graph read_file(char *filename)
 {
 	FILE *f = fopen(filename, "r");
 	if(f == NULL)
 	{
 		printf("File %s does not exist!\n", filename);
-		return;
+		exit(1);
 	}
 
+	Graph g = createGraph();
 	int n, m, count=0, v1, v2;
 	char url[99];
 
@@ -43,27 +44,35 @@ void read_file(Graph g, char *filename)
 	while(count != n)
 	{
 		fscanf(f, "%s %d\n", url, &v1);
-		// printf("%s %d\n", url, v1);
 		addVertex(g, v1, url);
 		count++;
+		
 	}
 
 	fscanf(f, "%d\n", &m);
 	count = 0;
 	while(count != m)
 	{
-		fscanf(f, "%d %d\n", &v1, &v2);
-		addEdge(g, v1, v2, 1);
-		count++;
+		if(fscanf(f, "%d %d\n", &v1, &v2) != EOF)
+		{
+			addEdge(g, v1, v2, 1);
+			count++;
+		}
+		else
+			goto error;
 	}
 
 	fclose(f);
+	return g;
+
+	error:
+	printf("The file %s is not formal!!!\n", filename);
+	exit(1);
 }
 
 void out(char *filename, int id)
 {
-	Graph g = createGraph();
-	read_file(g, filename);
+	Graph g = read_file(filename);
 	JRB node, adj;
 	adj = adjVertex(g, id);
 	if(adj)
@@ -102,22 +111,17 @@ int inde(Graph g, int v)
 
 void maxin(char *filename)
 {
-	Graph g = createGraph();
-	read_file(g, filename);
-	attribute a;
+	Graph g = read_file(filename);
 	JRB node;
 	int MAX=0;
-	int v;
+	int v, in_degree;
+	
 	jrb_traverse(node, g.vertices)
 	{
-		a = getAttribute(node);
-	
-		a->distance = inde(g, jval_i(node->key));
-		// printf("%d\t%d\n",jval_i(node->key), jval_i(node->key));
-		// printf("%d\n", a->distance);
-		if(MAX < a->distance)
+		in_degree = inde(g, jval_i(node->key));
+		if(MAX < in_degree)
 		{
-			MAX = a->distance;
+			MAX = in_degree;
 			v = jval_i(node->key);
 		}
 	}
@@ -128,8 +132,7 @@ void maxin(char *filename)
 
 void selfref(char *filename)
 {
-	Graph g = createGraph();
-	read_file(g, filename);
+	Graph g = read_file(filename);
 	JRB node, node1, adj;
 	jrb_traverse(node, g.edges)
 	{
@@ -163,8 +166,7 @@ void BFS_of_k(Graph g, int start, int k)
       a = getAttribute(v);
       a->visited = 0;
     }
-    //  v = jrb_find_int(g.vertices, start);
-	//  a = getAttribute(v);
+
 	a = verAttribute(g, start);
   	a->visited = 1;
 
@@ -180,8 +182,6 @@ void BFS_of_k(Graph g, int start, int k)
 
   		for(i = 0; i < n; i++)
 	   	{
-//	  v = jrb_find_int(g.vertices, adj[i]);
-//	  a = getAttribute(v);
 	    	a = verAttribute(g, adj[i]);
 	    	if(a->visited == 0)
 	    	{
@@ -196,9 +196,12 @@ void BFS_of_k(Graph g, int start, int k)
 
 void list(char *filename, int id, int k)
 {
-	Graph g = createGraph();
-	read_file(g, filename);
-
+	if(k < 1)
+	{
+		printf("The parameter K must be positive!!!\n");
+		exit(1);
+	}
+	Graph g = read_file(filename);
 	BFS_of_k(g, id, k);
 
 }
