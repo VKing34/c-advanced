@@ -55,6 +55,8 @@ void read_file(Graph g, char *filename)
 		addEdge(g, v1, v2, 1);
 		count++;
 	}
+
+	fclose(f);
 }
 
 void out(char *filename, int id)
