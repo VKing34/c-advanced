@@ -23,7 +23,8 @@ void size(char *filename)
 	}
 	fscanf(f,"%d\n", &m);
 	printf("Number of URLs: %d\nNumber of superlinks: %d\n", n, m);
-	
+
+	fclose(f);
 }
 
 void read_file(Graph g, char *filename)
