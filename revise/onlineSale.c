@@ -142,6 +142,12 @@ void check_related(Graph g)
 	printf("Enter ID of the second product: ");
 	scanf("%d", &v2);
 
+	if(v1 == v2)
+	{
+		printf("The same product!!!\n");
+		return;
+	}
+
 	if(hasEdge(g, v1, v2) == 1)
 	{
 		printf("The level of relation between 2 products: %d\n", getWeight(g, v1, v2));
@@ -202,6 +208,7 @@ int find_depth(Graph g, int start, int stop)
       a = getAttribute(node);
       a->visited = 0;
     }
+
   	push(stack, start);
 
   	while(!dll_empty(stack))
@@ -235,6 +242,7 @@ int find_depth(Graph g, int start, int stop)
 	       }
       }
     }
+
     free_dllist(stack);
     return 0;
 }
@@ -248,6 +256,12 @@ void related_path(Graph g)
 	scanf("%d", &start);
 	printf("Enter ID of the second product: ");
 	scanf("%d", &stop);
+
+	if(start == stop)
+	{
+		printf("The same product!!!\n");
+		return;
+	}
 
 	if(find_depth(g, start, stop) == 0)
 	{
@@ -272,7 +286,6 @@ void related_path(Graph g)
 		// printf("%d\n", a->parent);
 		push(stack, previous);
 		a = verAttribute(g, previous);
-		
 	}
 
 	dll_traverse(p, stack)
@@ -280,8 +293,9 @@ void related_path(Graph g)
 		printf("%s - ", getVerName(g, jval_i(p->val)));
 	}
 	printf("%s\n", getVerName(g, start));
-} 
 
+	free_dllist(stack);
+}
 
 int main()
 {
@@ -298,27 +312,35 @@ int main()
 		{
 			case 1:
 			list_products(g);
-
 			break;
+
 			case 2:
 			order_history(g);
 			break;
+
 			case 3:
 			check_related(g);
 			break;
+
 			case 4:
 			related_list(g);
 			break;
+
 			case 5:
 			related_path(g);
 			break;
+
 			case 6:
 			break;
+
 			default:
 			printf("Invalid input !!!\nPlease try again\n");
 			break;
 		}
 	}
+
+	dropGraph(g);
+	return 0;
 }
 
 

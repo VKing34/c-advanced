@@ -86,6 +86,7 @@ void out(char *filename, int id)
 	{
 		printf("The website (id: %d) does not have any link.\n", id);
 	}
+	dropGraph(g);
 }
 
 
@@ -127,7 +128,7 @@ void maxin(char *filename)
 	}
 
 	printf("The website has the most in-links: %s (id: %d)\n", getVerName(g, v), v);
-
+	dropGraph(g);
 }
 
 void selfref(char *filename)
@@ -149,7 +150,8 @@ void selfref(char *filename)
 			}
 		}
 	}
-	printf("OK!\n");	
+	printf("OK!\n");
+	dropGraph(g);	
 }
 
 void BFS_of_k(Graph g, int start, int k)
@@ -203,7 +205,7 @@ void list(char *filename, int id, int k)
 	}
 	Graph g = read_file(filename);
 	BFS_of_k(g, id, k);
-
+	dropGraph(g);
 }
 
 
