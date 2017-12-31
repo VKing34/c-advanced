@@ -176,7 +176,7 @@ void BFS_of_k(Graph g, int start, int k)
   	q = new_dllist();
   	enqueue(q, start);
 
-  	while(count != k)
+  	while(count != k && !dll_empty(q))
   	{
   		ver = dequeue(q);
 

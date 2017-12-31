@@ -113,13 +113,23 @@ void order_history(Graph g)
 				insertEdge(g, p1, p3, 1);
 			}
 
-			if(hasEdge(g, p2, p3) == 1)
+			// if(hasEdge(g, p2, p3) == 1)
+			// {
+			// 	weight_increase(g, p2, p3);
+			// }
+			// else
+			// {
+			// 	insertEdge(g, p2, p3, 1);
+			// }
+
+			// printf("%d\n", hasEdge(g, p2, p3));
+			if(hasEdge(g, p2, p3) == 0)
 			{
-				weight_increase(g, p2, p3);
+				insertEdge(g, p2, p3, 1);
 			}
 			else
 			{
-				insertEdge(g, p2, p3, 1);
+				weight_increase(g, p2, p3);
 			}
 
 			c = fgetc(f);
@@ -174,6 +184,7 @@ void related_list(Graph g)
 		jrb_traverse(node, adj)
 		{
 			jrb_insert_int(list, jval_i(node->val), new_jval_i(jval_i(node->key)));
+
 		}
 	}
 	else
@@ -185,6 +196,7 @@ void related_list(Graph g)
 	printf("List of related product(s):");
 	jrb_rtraverse(node, list)
 	{
+		// printf("%d\n", jval_i(node->key));
 		printf(" %s", getVerName(g, jval_i(node->val)));
 		if(node != jrb_first(list))
 		{
@@ -248,6 +260,60 @@ int find_depth(Graph g, int start, int stop)
 }
 
 
+int path_bfs(Graph g, int start, int stop)
+{
+	
+	Dllist q;
+	JRB node;
+	attribute a;
+	int ver, n ,i;
+	int adj[99];
+
+	jrb_traverse(node, g.vertices)
+	{
+		a = getAttribute(node);
+		a->visited = 0;
+	}
+
+	a = verAttribute(g, start);
+	a->visited = 1;
+
+	q = new_dllist();
+
+	enqueue(q, start);
+
+	while(!dll_empty(q))
+	{
+		ver = dequeue(q);
+		// printf("-%d-\n", ver);
+
+		if(ver == stop)
+		{
+			return 1;
+		}
+
+		n = getAdjVertices(g, ver, adj);
+		for(i = 0; i< n; i++)
+		{
+			// printf("%d\n", adj[i]);
+			a = verAttribute(g, adj[i]);
+			if(adj[i] == stop)
+			{
+				a->parent = ver;
+				return 1;
+			}
+			if(a->visited == 0)
+			{
+				a->visited = 1;
+				a->parent = ver;
+				enqueue(q, adj[i]);
+			}
+		}
+	}
+	free_dllist(q);
+	return 0;
+}
+
 void related_path(Graph g)
 {
 	int start, stop;
@@ -263,7 +329,7 @@ void related_path(Graph g)
 		return;
 	}
 
-	if(find_depth(g, start, stop) == 0)
+	if(path_bfs(g, start, stop) == 0)
 	{
 		printf("There's no relation between 2 products\n");
 		return;
@@ -296,6 +362,7 @@ void related_path(Graph g)
 
 	free_dllist(stack);
 }
+
 
 int main()
 {

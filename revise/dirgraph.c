@@ -177,7 +177,8 @@ JRB adjVertex(Graph g, int v)
 // Return 1 if hasEdge, return 0 if not
 int hasEdge(Graph g, int v1, int v2)
 {
-  JRB adj1 , tnode1, tnode2, adj2;
+  JRB adj1 , tnode1;
+  // JRB tnode2, adj2;
 
   adj1 = adjVertex(g, v1);
   if(adj1)
@@ -190,25 +191,28 @@ int hasEdge(Graph g, int v1, int v2)
       }
     }
   }
-  else
-  {
-    return 0;
-  }
 
-  adj2 = adjVertex(g, v2);
-  if(adj2)
-  {
-    jrb_traverse(tnode2, adj2)
-    {
-      if(v1 == jval_i(tnode2->key))
-	   {
-	     return 1;
-	   }
-    }
-  }
-  else{
-    return 0;
-  }
+  return 0;
+
+  // else
+  // {
+  //   return 0;
+  // }
+
+  // adj2 = adjVertex(g, v2);
+  // if(adj2 != NULL)
+  // {
+  //   jrb_traverse(tnode2, adj1)
+  //   {
+  //     if(v1 == jval_i(tnode2->key))
+	 //   {
+	 //     return 1;
+	 //   }
+  //   }
+  // }
+  // else{
+  //   return 0;
+  // }
 }
 
 int indegree(Graph g, int v, int *output)
@@ -369,27 +373,28 @@ int shortestPath(Graph g, int s, int t, int *path, int *length)
   pre = s;
   
   while(!dll_empty(q))
-    {
+  {
       u = extractMin(g, q);
       
       if(u != pre)
-	{
-	  weight += getWeight(g, pre, u);
-	}
+      {
+        weight += getWeight(g, pre, u);
+      }
 
       pre = u;
       path[i++] = u;
       if( u == t )
-	{
-	  *length = i;
-	  return weight;
-	}
+      {
+        *length = i;
+        return weight;
+      }
       n = getAdjVertices(g, u, adjVertices);
       for(j = 0; j < n; j++)
-	{
-	  relax(g, u, adjVertices[j]);
-	}
-    }
+      {
+        relax(g, u, adjVertices[j]);
+      }
+  }
+
   return weight;
 }
 
@@ -444,28 +449,28 @@ void BFS(Graph g, int start, int stop, int (*func)(Graph, int))
   enqueue(q, start);
 
   while(!dll_empty(q))
-    {
-      ver = dequeue(q);
+  {
+    ver = dequeue(q);
 
-      if(ver == stop)
-	{
-	  return;
-	}
+    if(ver == stop)
+    {
+      return;
+    }
       
-      n = getAdjVertices(g, ver, adj);
-      for(i = 0; i < n; i++)
-	{
-//	  v = jrb_find_int(g.vertices, adj[i]);
-//	  a = getAttribute(v);
-	a = verAttribute(g, adj[i]);
-	  if(a->visited == 0)
+    n = getAdjVertices(g, ver, adj);
+    for(i = 0; i < n; i++)
+    {
+      //	  v = jrb_find_int(g.vertices, adj[i]);
+      //	  a = getAttribute(v);
+      a = verAttribute(g, adj[i]);
+      if(a->visited == 0)
 	    {
 	      a->visited = 1;
 	      enqueue(q, adj[i]);
 	      func(g, adj[i]);
 	    }
-	}
     }
+  }
   
   free_dllist(q);
 }
@@ -633,12 +638,6 @@ void tSort(Graph g, int *output, int *total)
     a = getAttribute(v);
     a->visited = 0;
   }
-
-  // jrb_traverse(v, g.vertices)
-  // {
-  //   a = verAttribute(g, jval_i(v->key));
-  //   printf("%d\n", a->visited);
-  // }
 
   jrb_traverse(v, g.vertices)
   {
