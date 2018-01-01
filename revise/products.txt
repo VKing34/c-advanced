@@ -7,3 +7,4 @@
 7 doll
 8 shoes
 9 laptop
+10 lamp

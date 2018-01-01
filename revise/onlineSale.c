@@ -432,12 +432,15 @@ void related_path(Graph g)
 		a = verAttribute(g, previous);
 	}
 
+
+	printf("\n%s", getVerName(g, start));
+
 	dll_traverse(p, stack)
 	{
-		printf("%s - ", getVerName(g, jval_i(p->val)));
+		printf(" - %s", getVerName(g, jval_i(p->val)));
 	}
-	printf("%s\n", getVerName(g, start));
-
+	
+	printf("\n\n");
 	free_dllist(stack);
 }
 
