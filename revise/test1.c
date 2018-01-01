@@ -2,8 +2,6 @@
 #include"dirgraph.h"
 
 
-
-
 void size(char *filename)
 {
 	int n, m, count=0;
@@ -13,7 +11,7 @@ void size(char *filename)
 	{
 		printf("File %s does not exist!\n", filename);
 		return;
-	}
+	}z
 	fscanf(f, "%d\n", &n);
 	// printf("%d\n", n);
 	while(count != n)
@@ -67,6 +65,7 @@ Graph read_file(char *filename)
 
 	error:
 	printf("The file %s is not formal!!!\n", filename);
+	dropGraph(g);
 	exit(1);
 }
 
@@ -106,8 +105,8 @@ int inde(Graph g, int v)
 			}
 		}
 	}
+
 	return total;
-	
 }
 
 void maxin(char *filename)
@@ -135,6 +134,7 @@ void selfref(char *filename)
 {
 	Graph g = read_file(filename);
 	JRB node, node1, adj;
+
 	jrb_traverse(node, g.edges)
 	{
 		adj = adjVertex(g, jval_i(node->key));
@@ -151,6 +151,7 @@ void selfref(char *filename)
 		}
 	}
 	printf("OK!\n");
+
 	dropGraph(g);	
 }
 

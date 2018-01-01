@@ -3,3 +3,7 @@
 5 fabricSoftener
 2 fridge
 4 washingPowder
+6 cup
+7 doll
+8 shoes
+9 laptop

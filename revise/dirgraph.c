@@ -1,7 +1,7 @@
 #include"dirgraph.h"
-#define enqueue(queue, id) dll_append(queue, new_jval_i(id))
-#define push(queue, id) dll_prepend(stack, new_jval_i(id))
-#define pop(stack) dequeue(stack)
+// #define enqueue(queue, id) dll_append(queue, new_jval_i(id))
+// #define push(queue, id) dll_prepend(stack, new_jval_i(id))
+// #define pop(stack) dequeue(stack)
 
 Graph createGraph()
 {

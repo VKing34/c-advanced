@@ -143,6 +143,84 @@ void order_history(Graph g)
 	fclose(f);
 }
 
+void history(Graph g)
+{
+	FILE *f = fopen("orderhistory.txt", "r");
+
+	if(f == NULL)
+	{
+		printf("Can't open orderhistory.txt!!!\n");
+		exit(1);
+	}
+
+	int product[15], total, i, j;
+	char c;
+
+	printf("\n");
+	while(!feof(f))
+	{
+		total = 0;
+		if(fscanf(f,"%d", &product[total]) > 0)
+		{
+			printf("%s\t", getVerName(g, product[total]));
+			c = fgetc(f);
+			if(c == '\n')
+			{
+				printf("\n");
+				continue;
+			}
+			else if(c == EOF)
+			{
+				printf("\n");
+				break;
+			}
+			
+			while(1)
+			{
+				total++;
+				fscanf(f, "%d", &product[total]);
+				printf("%s\t", getVerName(g, product[total]));
+
+				c = fgetc(f);
+
+				if(c == '\n')
+				{
+					printf("\n");
+					break;
+				}
+				else if(c == EOF)
+				{
+					printf("\n");
+					break;
+				}
+			}
+			for(i=0; i< total; i++)
+			{
+				for(j=1; j<= total; j++)
+				{
+					if(hasEdge(g, product[i], product[j]) == 1)
+					{
+						weight_increase(g, product[i], product[j]);
+					}
+					else
+					{
+						insertEdge(g, product[i], product[j], 1);
+					}
+				}
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	printf("\n");
+
+	fclose(f);
+
+}
+
 void check_related(Graph g)
 {
 	int v1, v2;
@@ -382,7 +460,8 @@ int main()
 			break;
 
 			case 2:
-			order_history(g);
+			// order_history(g);
+			history(g);
 			break;
 
 			case 3:
