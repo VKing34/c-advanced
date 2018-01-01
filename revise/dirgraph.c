@@ -139,8 +139,13 @@ JRB getVertex(Graph g, int v)
 
 attribute verAttribute(Graph g, int v)
 {
-JRB node = getVertex(g, v);
-return ((attribute) jval_v(node->val));
+	JRB node = getVertex(g, v);
+	if(node == NULL)
+	{
+		printf("There does not exist the vertice %d!!!\n", v);
+		return NULL;
+	}
+	return ((attribute) jval_v(node->val));
 }
 
 int getEdgeValue(Graph g, int v1, int v2)
@@ -297,24 +302,26 @@ void relax(Graph g, int u, int v)
     }
 }
 
-JRB getAdjList(Graph g, int v)
-{
-JRB node = jrb_find_int(g.edges, v);
-if(node)
-{
-return (JRB) jval_v(node->val);
-}
-else
-{
-return NULL;
-}
-}
+// JRB getAdjList(Graph g, int v)
+// {
+// JRB node = jrb_find_int(g.edges, v);
+// if(node)
+// {
+// return (JRB) jval_v(node->val);
+// }
+// else
+// {
+// return NULL;
+// }
+
 
 int getAdjVertices(Graph g, int v, int *output)
 {
   JRB node;
   int i =0;
-  JRB adj = getAdjList(g, v);
+  // JRB adj = getAdjList(g, v);
+
+  JRB adj = adjVertex(g, v);
   
   if(!adj)
     {

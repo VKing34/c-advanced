@@ -185,18 +185,19 @@ void history(Graph g)
 
 				if(c == '\n')
 				{
-					printf("\n");
+					printf("Xuong dong\n");
 					break;
 				}
 				else if(c == EOF)
 				{
+					printf("EOF\n");
 					printf("\n");
 					break;
 				}
 			}
 			for(i=0; i< total; i++)
 			{
-				for(j=1; j<= total; j++)
+				for(j=i + 1; j<= total; j++)
 				{
 					if(hasEdge(g, product[i], product[j]) == 1)
 					{
@@ -347,12 +348,14 @@ int path_bfs(Graph g, int start, int stop)
 	int ver, n ,i;
 	int adj[99];
 
+	// Mark all the vertices as unvisited
 	jrb_traverse(node, g.vertices)
 	{
 		a = getAttribute(node);
 		a->visited = 0;
 	}
 
+	// Visit the vertice "start"
 	a = verAttribute(g, start);
 	a->visited = 1;
 
@@ -388,9 +391,11 @@ int path_bfs(Graph g, int start, int stop)
 			}
 		}
 	}
+
 	free_dllist(q);
 	return 0;
 }
+
 
 void related_path(Graph g)
 {
@@ -407,41 +412,61 @@ void related_path(Graph g)
 		return;
 	}
 
-	if(path_bfs(g, start, stop) == 0)
+	// if(path_bfs(g, start, stop) == 0)
+	// {
+	// 	printf("There's no relation between 2 products\n");
+	// 	return;
+	// }
+
+	// Dllist p;
+	// Dllist stack = new_dllist();
+
+	// push(stack, stop);
+	// attribute a = verAttribute(g, stop);
+	// int previous;
+
+	// while(1)
+	// {
+	// 	previous = a->parent;
+	// 	if(previous == start)
+	// 	{
+	// 		break;
+	// 	}
+	// 	// printf("%d\n", a->parent);
+	// 	push(stack, previous);
+	// 	a = verAttribute(g, previous);
+	// }
+
+
+	// printf("\n%s", getVerName(g, start));
+
+	// dll_traverse(p, stack)
+	// {
+	// 	printf(" - %s", getVerName(g, jval_i(p->val)));
+	// }
+	
+	// printf("\n\n");
+	// free_dllist(stack);
+
+
+	if(path_bfs(g, stop, start) == 0)
 	{
-		printf("There's no relation between 2 products\n");
+		printf("There's no indirected relattion between 2 products!!!\n");
 		return;
 	}
 
-	Dllist p;
-	Dllist stack = new_dllist();
+	attribute a = verAttribute(g, start);
+	int next=-1;
 
-	push(stack, stop);
-	attribute a = verAttribute(g, stop);
-	int previous;
-
-	while(1)
+	printf("\n");
+	while(next != stop)
 	{
-		previous = a->parent;
-		if(previous == start)
-		{
-			break;
-		}
-		// printf("%d\n", a->parent);
-		push(stack, previous);
-		a = verAttribute(g, previous);
+		printf("%s - ", a->name);
+		next = a->parent;
+		a = verAttribute(g, next);
 	}
+	printf("%s\n\n", getVerName(g, stop));
 
-
-	printf("\n%s", getVerName(g, start));
-
-	dll_traverse(p, stack)
-	{
-		printf(" - %s", getVerName(g, jval_i(p->val)));
-	}
-	
-	printf("\n\n");
-	free_dllist(stack);
 }
 
 
