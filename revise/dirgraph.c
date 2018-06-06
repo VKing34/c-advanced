@@ -67,6 +67,46 @@ void addVertex(Graph g, int v, char *name)
  //   }
 }
 
+int hasVertex(Graph g, int v)
+{
+  JRB node = jrb_find_int(g.vertices, v);
+  if(node ==NULL)
+  {
+    return 0;
+  }
+  return 1;
+}
+
+int vertices(Graph g)
+{
+  int total =0;
+  JRB node;
+  if(g.vertices == NULL)
+  {
+    return 0;
+  }
+  jrb_traverse(node, g.vertices)
+  {
+    total++;
+  }
+  return total;
+}
+
+int edges(Graph g)
+{
+  int total =0;
+  JRB node, node1, adj;
+  jrb_traverse(node, g.edges)
+  {
+    adj = adjVertex(g, jval_i(node->key));
+    jrb_traverse(node1, adj)
+    {
+      total++;
+    }
+  }
+  return total;
+}
+
 void addEdge(Graph g, int v1, int v2, int weight)
 {
   if(weight < 0)
@@ -415,15 +455,15 @@ int dequeue(Dllist queue)
 
 int printVertex(Graph g, int v)
 {
-  attribute a;
-  //JRB temp;
+ //  attribute a;
+ //  //JRB temp;
 
-  //temp = jrb_find_int(g.vertices, v);
-  //a = getAttribute(temp);
+ //  //temp = jrb_find_int(g.vertices, v);
+ //  //a = getAttribute(temp);
 
-	a = verAttribute(g, v);
+	// a = verAttribute(g, v);
 
-  printf("%d : %s\n", v, a->name);
+  printf("%d : %s\n", v, getVerName(g, v));
 
   return 0;
   
@@ -523,6 +563,7 @@ void DFS(Graph g, int start, int stop, int (*func)(Graph, int))
       {
           //	node = jrb_find_int(g.vertices, adj[i]);
           //	a = getAttribute(node);
+
 	       a = verAttribute(g, adj[i]);
 	       if(a->visited == 0)
 	       {
@@ -664,3 +705,13 @@ void tSort(Graph g, int *output, int *total)
   free_dllist(q);
 }
 
+void mark_unvisited(Graph g)
+{
+  JRB node;
+  attribute a;
+  jrb_traverse(node, g.vertices)
+  {
+    a = getAttribute(node);
+    a->visited = 0;
+  }
+}

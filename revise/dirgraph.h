@@ -30,6 +30,9 @@ typedef struct{
 
 Graph createGraph();
 void addVertex(Graph g, int id, char *name);
+int hasVertex(Graph g, int v);
+int vertices(Graph g);
+int edges(Graph g);
 
 attribute getAttribute(JRB node);
 
@@ -51,6 +54,7 @@ int indegree(Graph g, int v, int *output);
 
 int outdegree(Graph g, int v, int *output);
 
+JRB getVertex(Graph g, int v);
 char *getVerName(Graph g, int v);
 
 int getAdjVertices(Graph g, int v, int *output);		// return number of adjacent vertices
@@ -69,4 +73,5 @@ int DAG(Graph g);						// return 0 if DAG
 
 void tSort(Graph g, int *output, int *total);
 void dropGraph(Graph g);
+void mark_unvisited(Graph g);
 

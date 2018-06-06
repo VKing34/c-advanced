@@ -1,0 +1,154 @@
+
+
+
+typedef struct
+{
+	int coef;
+	int exp;
+}elementType1;
+
+#include"string_ext.h"
+
+#include"doublelib.h"
+
+node1 *head, *tail;
+node1 *head2, *tail2;
+
+
+
+void read()
+{
+	FILE *fin = fopen("poly.txt","r");
+	if(fin == NULL)
+	{
+		printf("Can't open B.txt!!!\n"); 
+		return;
+	}
+	elementType1 n;
+	while(1)
+	{
+		if(feof(fin)) 
+			break;
+		fscanf(fin, "%d", &n.coef);
+		if(n.coef == -1)
+			break;
+		fscanf(fin,"%d",&n.exp);
+		insertAtTail(n, &head, &tail);
+	}
+	while(1)
+	{
+		if(feof(fin))
+			break;
+		if(fscanf(fin,"%d",&n.coef) == EOF)
+			break;
+		if(n.coef == -1)
+			break;
+		if(fscanf(fin,"%d",&n.exp) == EOF)
+			break;
+		insertAtTail(n,&head2,&tail2);
+	}
+
+	fclose(fin); 
+	printf("------------Sucessfull---------------------\n");
+}
+
+void show()
+{
+	node1 *p = head;
+	printf("P = ");
+	while (p != NULL)
+	{
+		if(p == head && p->element.coef >= 0)
+		{
+		    printf("%dx^%d(%d) ", p->element.coef, p->element.exp,p);
+		}
+		if(p->element.coef >= 0)
+			printf("+ %dx^%d(%d) ", p->element.coef,p->element.exp);
+		else
+			printf("%dx^%d(%d) ",p->element.coef,p->element.exp );
+		p = p->next;
+	}
+	printf("\n");
+	p = head2;
+	printf("Q = ");
+	while (p != NULL)
+	{
+		if(p == head2 && p->element.coef >= 0)
+		{
+		    printf("%dx^%d(%d) ", p->element.coef, p->element.exp);
+		}
+		if(p->element.coef >= 0)
+			printf("+ %dx^%d(%d) ", p->element.coef,p->element.exp);
+		else
+			printf("%dx^%d(%d) ",p->element.coef,p->element.exp );
+		p = p->next;
+	}
+	printf("\n");
+}
+
+void correct()
+{
+	int len1 = len(head);
+	elementType1 list1[len1];
+	int i= 0;
+	node1 *p = head;
+	for(i=0;i<len1 ; i++)
+	{
+		list1[i]=p->element;
+		p=p->next;
+	}
+	quickSort(list1,0,len1-1);
+	for(i=0;i<len1 ; i++)
+	{
+		printf("%d^%d\t", list1[i].coef,list1[i].exp);
+
+	}
+	
+}
+
+void merge()
+{
+	
+}
+
+
+void main()
+{
+	int x;
+	while (x != 5)
+	{
+		printf("------------------------------------------------\n");
+		printf("\t              Menu\n");
+		printf("------------------------------------------------\n");
+		printf("1. Read\n2. Show\n3. Correct\n4. Merge\n5. Exit\nChoose one option: "); scanf("%d", &x);
+
+		/* while(getchar()!='\n'); */
+		 switch (x) {
+		case 1: 
+			read();
+			break;
+		
+		case 2:
+			show();
+			break;
+		case 3:
+			correct();
+			break;
+		case 4:
+			merge();
+			
+			break;
+		case 5:
+		   
+			break;
+    
+		default:
+			printf("Please try again!!!\n");
+			break;		
+		}
+	}
+
+	
+	freeall(&head);
+	freeall(&head2);
+}
